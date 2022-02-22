@@ -1,22 +1,13 @@
 import React from "react";
 //UI
-import { Button, Container, Link } from "@nextui-org/react";
+import { Container } from "@nextui-org/react";
+
+import Header from "../components/Header";
 
 const index = () => {
   return (
-    <Container
-      display="flex"
-      fluid
-      justify="space-between"
-      style={{ height: 100, marginTop: 50 }}
-    >
-      <Link href="#">Click me!</Link>
-      <Link href="#" color="warning">
-        Click me!
-      </Link>
-      <Link href="#" color="secondary">
-        Click me!
-      </Link>
+    <Container sm style={{ padding: "30px 0" }}>
+      <Header />
     </Container>
   );
 };
