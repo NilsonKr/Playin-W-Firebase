@@ -1,22 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 //UI
 import { Si1Password } from "react-icons/si";
 import { MdAlternateEmail } from "react-icons/md";
-import { Modal, Input, Text, Row, Checkbox, Button } from "@nextui-org/react";
+import {
+  Modal,
+  Input,
+  Text,
+  Row,
+  Checkbox,
+  Button,
+  Link,
+} from "@nextui-org/react";
 
-type Props = { open: boolean; handleClose: () => void; signIn: () => void };
+type Props = {
+  open: boolean;
+  handleClose: () => void;
+  signIn: () => void;
+  redirect: () => void;
+};
 
-export const SignInModal: React.FC<Props> = ({ open, handleClose, signIn }) => {
+export const SignInModal: React.FC<Props> = ({
+  open,
+  redirect,
+  handleClose,
+  signIn,
+}) => {
+  const [isRedirect, setRedirect] = useState<boolean>(false);
+
   return (
     <Modal
       closeButton
       aria-labelledby="modal-title"
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        if (!isRedirect) handleClose();
+      }}
     >
       <Modal.Header>
         <Text id="modal-title" size={18}>
-          Welcome to{" "}
+          Welcome Again to{" "}
           <Text b size={18}>
             NextVideo
           </Text>
@@ -46,6 +68,19 @@ export const SignInModal: React.FC<Props> = ({ open, handleClose, signIn }) => {
             <Text size={14}>Remember me</Text>
           </Checkbox>
           <Text size={14}>Forgot password?</Text>
+        </Row>
+        <Row justify="center">
+          Are you New ?
+          <Text
+            style={{ marginLeft: 5, cursor: "pointer" }}
+            color="secondary"
+            onClick={() => {
+              setRedirect(true);
+              redirect();
+            }}
+          >
+            Sign Up!
+          </Text>
         </Row>
       </Modal.Body>
       <Modal.Footer>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Grid, Button } from "@nextui-org/react";
 
 import SignInModal from "../SignIn";
+import SignUpModal from "../SignUp";
 
 export const Header = () => {
   const [modal, setModal] = useState<string>("");
@@ -27,8 +28,14 @@ export const Header = () => {
         </Button>
       </Grid.Container>
       <SignInModal
+        redirect={() => setModal("sign_up")}
         signIn={() => {}}
         open={modal === "sign_in"}
+        handleClose={() => setModal("")}
+      />
+      <SignUpModal
+        signIn={() => {}}
+        open={modal === "sign_up"}
         handleClose={() => setModal("")}
       />
     </>
