@@ -1,13 +1,21 @@
 import styled from "styled-components";
 
-export const MainContainer = styled.main`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 0 30px;
+type VideoProps = { isSelected?: boolean };
 
-  & video {
-    width: 80%;
-    height: 400px;
-  }
+export const MainContainer = styled.main`
+  box-sizing: border-box;
+  width: 700px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  overflow-x: hidden;
+  padding: 0 100px;
+  gap: 35px;
+`;
+
+export const StyledVideo = styled.video<VideoProps>`
+  width: 100%;
+  height: ${({ isSelected }) => (isSelected ? "350px" : "240px")};
+  transition: all 0.3s linear;
 `;
