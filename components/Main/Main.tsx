@@ -21,7 +21,7 @@ export const Main = () => {
     const next = selected + 1;
 
     videos.forEach((video) => {
-      video.style.transform = `translateX(-${460 * (selected + 1)}px)`;
+      video.style.transform = `translateX(-${next * 460}px)`;
     });
 
     setSelected(next);
@@ -32,7 +32,7 @@ export const Main = () => {
       .childNodes as NodeListOf<HTMLVideoElement>;
     const next = selected - 1;
 
-    videos.forEach((video, index) => {
+    videos.forEach((video) => {
       video.style.transform = `translateX(-${next * 460}px)`;
     });
 
@@ -62,7 +62,12 @@ export const Main = () => {
       </Container>
       <MainContainer ref={sliderRef}>
         {videos.map((src, index) => (
-          <StyledVideo isSelected={index === selected} src={src} controls />
+          <StyledVideo
+            key={index}
+            isSelected={index === selected}
+            src={src}
+            controls
+          />
         ))}
       </MainContainer>
     </>
