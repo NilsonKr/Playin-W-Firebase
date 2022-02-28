@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAuth } from "../../Hooks/useAuth";
+import { useForm } from "../../Hooks/useForm";
 //UI
 import { Si1Password } from "react-icons/si";
 import { MdAlternateEmail } from "react-icons/md";
@@ -15,7 +17,6 @@ import {
 type Props = {
   open: boolean;
   handleClose: () => void;
-  signIn: () => void;
   redirect: () => void;
 };
 
@@ -23,9 +24,20 @@ export const SignInModal: React.FC<Props> = ({
   open,
   redirect,
   handleClose,
-  signIn,
 }) => {
+  const { signIn } = useAuth();
+  const { form, handleChange } = useForm({ email: "", password: "" });
   const [isRedirect, setRedirect] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = async () => {
+    const result = await signIn(form.email, form.password);
+    if (result.success) {
+      handleClose();
+    } else {
+      setError(result.message);
+    }
+  };
 
   return (
     <Modal
@@ -46,6 +58,8 @@ export const SignInModal: React.FC<Props> = ({
       </Modal.Header>
       <Modal.Body>
         <Input
+          aria-label="email"
+          onChange={(e) => handleChange(e.target.value, "email")}
           clearable
           bordered
           fullWidth
@@ -55,6 +69,9 @@ export const SignInModal: React.FC<Props> = ({
           contentLeft={<MdAlternateEmail />}
         />
         <Input
+          aria-label="password"
+          onChange={(e) => handleChange(e.target.value, "password")}
+          type="password"
           clearable
           bordered
           fullWidth
@@ -63,12 +80,16 @@ export const SignInModal: React.FC<Props> = ({
           placeholder="Password"
           contentLeft={<Si1Password />}
         />
-        <Row justify="space-between">
-          <Checkbox>
-            <Text size={14}>Remember me</Text>
-          </Checkbox>
+        <Row justify="flex-end">
           <Text size={14}>Forgot password?</Text>
         </Row>
+        {error && (
+          <Row justify="center">
+            <Text size={15} color="#ec6464">
+              {error}
+            </Text>
+          </Row>
+        )}
         <Row justify="center">
           Are you New ?
           <Text
@@ -87,7 +108,7 @@ export const SignInModal: React.FC<Props> = ({
         <Button auto flat color="error" onClick={handleClose}>
           Close
         </Button>
-        <Button auto onClick={signIn}>
+        <Button auto onClick={submit}>
           Sign in
         </Button>
       </Modal.Footer>

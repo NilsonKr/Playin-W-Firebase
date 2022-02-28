@@ -1,3 +1,4 @@
+import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -30,7 +31,7 @@ export const registerWithEmail = async (
 
     return { success: true, message: null };
   } catch (error) {
-    console.log(error);
-    return { success: false, message: null };
+    const { code } = <FirebaseError>error;
+    return { success: false, message: code };
   }
 };

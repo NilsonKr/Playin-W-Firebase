@@ -1,6 +1,7 @@
 import { AppProps } from "next/app";
 import { createTheme, NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextUIThemeProvider } from "next-themes";
+import { UserContextProvider } from "../context/UserContext";
 import "../storage/index";
 
 const darkTheme = createTheme({
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <NextUIProvider>
-        <Component {...pageProps} />
+        <UserContextProvider>
+          <Component {...pageProps} />
+        </UserContextProvider>
       </NextUIProvider>
     </NextUIThemeProvider>
   );

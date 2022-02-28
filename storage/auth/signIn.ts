@@ -1,5 +1,11 @@
+import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword, Auth } from "firebase/auth";
 import { AuthMethodsReturn } from "../../types/";
+
+const errors: { [k: string]: string } = {
+  "auth/invalid-email": "Invalid E-mail",
+  "auth/wrong-password": "Invalid Password",
+};
 
 export const signIn = async (
   getAuth: Auth,
@@ -15,7 +21,7 @@ export const signIn = async (
       return { success: false, message: "Please, do the email verification." };
     }
   } catch (error) {
-    console.log(error);
-    return { success: false, message: "" };
+    const { code } = <FirebaseError>error;
+    return { success: false, message: errors[code] };
   }
 };
