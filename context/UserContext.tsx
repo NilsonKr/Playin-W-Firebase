@@ -11,8 +11,6 @@ export const userContext = React.createContext<Partial<UserContextValues>>({});
 export const UserContextProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  console.log(user);
-
   return (
     <userContext.Provider value={{ currentUser: user, updateUser: setUser }}>
       {children}

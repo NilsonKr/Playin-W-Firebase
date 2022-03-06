@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 //UI
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 import { Container, Button } from "@nextui-org/react";

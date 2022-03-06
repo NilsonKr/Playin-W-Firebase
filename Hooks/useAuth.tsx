@@ -1,5 +1,9 @@
 import { useContext } from "react";
-import { signIn as signInAuth, registerWithEmail } from "../storage/auth/";
+import {
+  signIn as signInAuth,
+  registerWithEmail,
+  logoutAuth,
+} from "../storage/auth/";
 import { getAuth } from "firebase/auth";
 
 import { userContext } from "../context/UserContext";
@@ -29,5 +33,14 @@ export const useAuth = () => {
     return registerWithEmail(auth, email, pswd, username);
   };
 
-  return { currentUser, signIn, createAccount };
+  //Logout
+  const logout = async () => {
+    const result = await logoutAuth(auth);
+
+    if (result.success) {
+      updateUser!(null);
+    }
+  };
+
+  return { currentUser, signIn, createAccount, logout };
 };

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../../Hooks/useAuth";
 //UI
 import { Grid, Button } from "@nextui-org/react";
 
@@ -6,9 +7,14 @@ import SignInModal from "../SignIn";
 import SignUpModal from "../SignUp";
 
 export const Header = () => {
+  const { logout, currentUser } = useAuth();
   const [modal, setModal] = useState<string>("");
 
   const toggleModal = (newModal: string) => {
+    if (newModal === "logout") {
+      return logout();
+    }
+
     setModal((prev) => (prev === newModal ? "" : newModal));
   };
 
@@ -19,24 +25,22 @@ export const Header = () => {
         style={{ marginTop: 30, padding: "0 50px" }}
       >
         <Button
-          onClick={() => toggleModal("sign_in")}
+          onClick={() => toggleModal(currentUser ? "logout" : "sign_in")}
           shadow
-          color="primary"
+          color={currentUser ? "error" : "primary"}
           auto
         >
-          Sign In
+          {currentUser ? "Log out" : "Sign In"}
         </Button>
       </Grid.Container>
       <SignInModal
-        redirect={() => setModal("sign_up")}
-        signIn={() => {}}
+        redirect={() => toggleModal("sign_up")}
         open={modal === "sign_in"}
-        handleClose={() => setModal("")}
+        handleClose={() => toggleModal("")}
       />
       <SignUpModal
-        signIn={() => {}}
         open={modal === "sign_up"}
-        handleClose={() => setModal("")}
+        handleClose={() => toggleModal("")}
       />
     </>
   );
