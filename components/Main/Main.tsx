@@ -1,8 +1,9 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef } from "react";
 //UI
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 import { Container, Button } from "@nextui-org/react";
 import { MainContainer, StyledVideo } from "./Main.style";
+import TagsRow from "../TagsRow";
 
 const videos = [
   "/assets/sample2.mp4",
@@ -70,6 +71,7 @@ export const Main = () => {
           />
         ))}
       </MainContainer>
+      <TagsRow />
     </>
   );
 };
