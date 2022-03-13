@@ -8,16 +8,23 @@ type Tag = {
 
 export const useTags = () => {
   const [tags, setTags] = useState<Tag[]>([]);
+  const [selected, setTagSelected] = useState<string>();
 
+  const selectTag = (id: string) => {
+    setTagSelected(id);
+  };
+
+  //CRUD ACTIONS
   const createTag = (name: string) => AddTag(name);
 
   const getTagsList = async () => {
-    const list: Tag[] = [];
-    const querySnapshot = await GetTags();
+    GetTags((querySnapshot) => {
+      const list: Tag[] = [];
 
-    querySnapshot?.docs.forEach((doc) => list.push(doc.data() as Tag));
-    setTags(list);
+      querySnapshot?.docs.forEach((doc) => list.push(doc.data() as Tag));
+      setTags(list);
+    });
   };
 
-  return { tags, createTag, getTagsList };
+  return { tags, createTag, getTagsList, selectTag, selected };
 };

@@ -1,4 +1,11 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  DocumentData,
+  getDocs,
+  onSnapshot,
+  QuerySnapshot,
+} from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
 
 import { db } from "../";
@@ -11,17 +18,15 @@ export const AddTag = async (name: string) => {
       name,
     });
 
-    console.log(result);
+    return true;
   } catch (error) {
     console.log((error as FirebaseError).message);
+    return false;
   }
 };
 
-export const GetTags = async () => {
-  try {
-    const tagsList = await getDocs(collection(db, "tags"));
-    return tagsList;
-  } catch (error) {
-    console.log((error as FirebaseError).message);
-  }
+type SnapshotCallback = (snapshot: QuerySnapshot<DocumentData>) => void;
+
+export const GetTags = (cb: SnapshotCallback) => {
+  onSnapshot(collection(db, "tags"), cb);
 };

@@ -5,28 +5,39 @@ import { useForm } from "../../Hooks/useForm";
 import { FaCloudUploadAlt, FaCheck } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 import { Row, Input, Button } from "@nextui-org/react";
+import { RowContainer } from "./Tag.style";
+//Components
+import { TagItem } from "./TagItem";
 
 export const TagsRow = () => {
   const [isNew, setNew] = useState<boolean>();
-  const { tags, createTag, getTagsList } = useTags();
+  const { tags, createTag, getTagsList, selectTag, selected } = useTags();
   const { form: newTag, handleChange } = useForm({ name: "" });
 
   useEffect(() => {
     getTagsList();
   }, []);
 
-  console.log(tags);
+  const handleCreate = async () => {
+    const isCreated = await createTag(newTag.name);
+
+    if (isCreated) {
+      setNew(false);
+      handleChange("", "name");
+    }
+  };
 
   return (
-    <Row style={{ width: "80%", margin: "30px auto 0" }} align="center">
+    <RowContainer style={{}} align="center">
       <FaCloudUploadAlt
         size="40px"
         color="#7928c9"
-        style={{ cursor: "pointer", marginRight: 20 }}
+        style={{ minWidth: 40, cursor: "pointer", marginRight: 10 }}
         onClick={() => setNew((prev) => !prev)}
       />
+
       {isNew && (
-        <Row align="center" gap={3}>
+        <Row style={{ minWidth: 300 }} fluid={false} align="center">
           <Input
             underlined
             color="secondary"
@@ -34,7 +45,7 @@ export const TagsRow = () => {
             onChange={(e) => handleChange(e.target.value, "name")}
           />
           <Button
-            onClick={() => createTag(newTag.name)}
+            onClick={handleCreate}
             style={{ margin: "0 15px" }}
             auto
             icon={<FaCheck size="20px" />}
@@ -50,6 +61,16 @@ export const TagsRow = () => {
           />
         </Row>
       )}
-    </Row>
+
+      {tags.map((tag, i) => (
+        <TagItem
+          label={tag.name}
+          selected={selected === i.toString()}
+          select={() =>
+            selectTag(selected === i.toString() ? "" : i.toString())
+          }
+        />
+      ))}
+    </RowContainer>
   );
 };
