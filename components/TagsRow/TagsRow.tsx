@@ -11,7 +11,8 @@ import { TagItem } from "./TagItem";
 
 export const TagsRow = () => {
   const [isNew, setNew] = useState<boolean>();
-  const { tags, createTag, getTagsList, selectTag, selected } = useTags();
+  const { tags, createTag, getTagsList, removeTag, selectTag, selected } =
+    useTags();
   const { form: newTag, handleChange } = useForm({ name: "" });
 
   useEffect(() => {
@@ -64,6 +65,9 @@ export const TagsRow = () => {
 
       {tags.map((tag, i) => (
         <TagItem
+          key={tag.id}
+          id={tag.id}
+          remove={removeTag}
           label={tag.name}
           selected={selected === i.toString()}
           select={() =>

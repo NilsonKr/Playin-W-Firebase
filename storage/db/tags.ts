@@ -1,9 +1,10 @@
 import {
-  addDoc,
+  doc,
   collection,
-  DocumentData,
-  getDocs,
+  addDoc,
   onSnapshot,
+  deleteDoc,
+  DocumentData,
   QuerySnapshot,
 } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
@@ -14,7 +15,7 @@ import { TAGS_COLLECTION } from "../constants";
 
 export const AddTag = async (name: string) => {
   try {
-    const result = await addDoc(collection(db, TAGS_COLLECTION), {
+    await addDoc(collection(db, TAGS_COLLECTION), {
       name,
     });
 
@@ -30,3 +31,5 @@ type SnapshotCallback = (snapshot: QuerySnapshot<DocumentData>) => void;
 export const GetTags = (cb: SnapshotCallback) => {
   onSnapshot(collection(db, "tags"), cb);
 };
+
+export const DeleteTag = (id: string) => deleteDoc(doc(db, `tags/${id}`));

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { AddTag } from "../storage/db/tags";
-import { GetTags } from "../storage/db/tags";
+import { GetTags, DeleteTag, AddTag } from "../storage/db/tags";
 
 type Tag = {
+  id: string;
   name: string;
 };
 
@@ -21,10 +21,14 @@ export const useTags = () => {
     GetTags((querySnapshot) => {
       const list: Tag[] = [];
 
-      querySnapshot?.docs.forEach((doc) => list.push(doc.data() as Tag));
+      querySnapshot?.docs.forEach((doc) =>
+        list.push({ ...(doc.data() as Tag), id: doc.id })
+      );
       setTags(list);
     });
   };
 
-  return { tags, createTag, getTagsList, selectTag, selected };
+  const removeTag = (id: string) => DeleteTag(id);
+
+  return { tags, createTag, getTagsList, removeTag, selectTag, selected };
 };
