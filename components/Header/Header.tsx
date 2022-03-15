@@ -5,6 +5,7 @@ import { Grid, Button } from "@nextui-org/react";
 
 import SignInModal from "../SignIn";
 import SignUpModal from "../SignUp";
+import UploadModal from "../Upload";
 
 export const Header = () => {
   const { logout, currentUser } = useAuth();
@@ -22,8 +23,19 @@ export const Header = () => {
     <>
       <Grid.Container
         justify="flex-end"
-        style={{ marginTop: 30, padding: "0 50px" }}
+        style={{ marginTop: 30, padding: "0 40px" }}
       >
+        {currentUser && (
+          <Button
+            onClick={() => toggleModal("upload_modal")}
+            shadow
+            color={"primary"}
+            auto
+            style={{ marginRight: 20 }}
+          >
+            Upload
+          </Button>
+        )}
         <Button
           onClick={() => toggleModal(currentUser ? "logout" : "sign_in")}
           shadow
@@ -40,6 +52,10 @@ export const Header = () => {
       />
       <SignUpModal
         open={modal === "sign_up"}
+        handleClose={() => toggleModal("")}
+      />
+      <UploadModal
+        open={modal === "upload_modal"}
         handleClose={() => toggleModal("")}
       />
     </>

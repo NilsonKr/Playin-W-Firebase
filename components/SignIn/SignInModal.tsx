@@ -4,15 +4,7 @@ import { useForm } from "../../Hooks/useForm";
 //UI
 import { Si1Password } from "react-icons/si";
 import { MdAlternateEmail } from "react-icons/md";
-import {
-  Modal,
-  Input,
-  Text,
-  Row,
-  Checkbox,
-  Button,
-  Link,
-} from "@nextui-org/react";
+import { Modal, Input, Text, Row, Button } from "@nextui-org/react";
 
 type Props = {
   open: boolean;

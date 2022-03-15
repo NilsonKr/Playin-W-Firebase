@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useTags } from "../../Hooks/useTags";
 import { useForm } from "../../Hooks/useForm";
 //UI
-import { FaCloudUploadAlt, FaCheck } from "react-icons/fa";
-import { IoIosClose } from "react-icons/io";
+import { FaCheck } from "react-icons/fa";
+import { IoAddCircle, IoClose } from "react-icons/io5";
 import { Row, Input, Button } from "@nextui-org/react";
 import { RowContainer } from "./Tag.style";
 //Components
@@ -29,8 +29,8 @@ export const TagsRow = () => {
   };
 
   return (
-    <RowContainer style={{}} align="center">
-      <FaCloudUploadAlt
+    <RowContainer style={{ marginBottom: 20 }} align="center">
+      <IoAddCircle
         size="40px"
         color="#7928c9"
         style={{ minWidth: 40, cursor: "pointer", marginRight: 10 }}
@@ -57,7 +57,7 @@ export const TagsRow = () => {
             onClick={() => setNew(false)}
             auto
             color="error"
-            icon={<IoIosClose size="40px" />}
+            icon={<IoClose size="25px" />}
             flat
           />
         </Row>

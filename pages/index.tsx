@@ -16,7 +16,7 @@ const index = () => {
       direction="column"
       alignItems="center"
       sm
-      style={{ padding: "30px 0 0", height: "100vh" }}
+      style={{ padding: "30px 0 0", minHeight: "100vh" }}
     >
       <Header />
       {currentUser && (
