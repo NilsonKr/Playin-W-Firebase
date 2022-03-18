@@ -12,7 +12,7 @@ export const uploadVideo = async (
   successCb: handleSuccess,
   errorCb: handleError
 ) => {
-  const storageRef = ref(storage, userId);
+  const storageRef = ref(storage, `videos/${userId}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
   //Update upload state progress

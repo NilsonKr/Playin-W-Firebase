@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useAuth } from "../../Hooks/useAuth";
 //UI
 import { StyledDropZone, StyledProgressBar } from "./Upload.style";
 import { Modal, Text, Button } from "@nextui-org/react";
+
+import { uploadVideo } from "../../storage/storage/videos";
 
 type Props = {
   open: boolean;
@@ -9,14 +12,27 @@ type Props = {
 };
 
 export const UploadModal = ({ open, handleClose }: Props) => {
+  const { currentUser } = useAuth();
   const [uploadProgress, setProgress] = useState<number>(0);
   const [isUploading, setUploading] = useState<boolean>(false);
   const [isError, setError] = useState<string>("");
 
-  const handleDrop = (ev: React.DragEvent) => {
+  const handleDrop = async (ev: React.DragEvent) => {
     ev.preventDefault();
-    console.log(ev.dataTransfer.files, "Videos");
+    setError("");
+    setUploading(true);
     //UPLOAD VIDEO
+
+    uploadVideo(
+      ev.dataTransfer.files[0],
+      currentUser!.uid,
+      setProgress,
+      (url: string) => {
+        console.log(url);
+        setUploading(false);
+      },
+      setError
+    );
   };
 
   return (
