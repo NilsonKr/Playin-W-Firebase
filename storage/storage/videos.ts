@@ -1,4 +1,11 @@
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { FirebaseError } from "firebase/app";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  listAll,
+  getMetadata,
+} from "firebase/storage";
 import { storage } from "../index";
 
 type UpdateProgress = (percentage: number) => void;
@@ -12,7 +19,7 @@ export const uploadVideo = async (
   successCb: handleSuccess,
   errorCb: handleError
 ) => {
-  const storageRef = ref(storage, `videos/${userId}`);
+  const storageRef = ref(storage, `videos/${userId}/${file.name}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
   //Update upload state progress
@@ -30,4 +37,23 @@ export const uploadVideo = async (
       successCb(url);
     }
   );
+};
+
+export const getVideos = async (uid: string): Promise<string[]> => {
+  const storageRef = ref(storage, `videos/${uid}`);
+  try {
+    const collection = await listAll(storageRef);
+
+    const videosRefs = collection.items.map((refItem) =>
+      getDownloadURL(refItem).then((data) => data)
+    );
+
+    const videosUrl = await Promise.all(videosRefs);
+
+    return videosUrl;
+  } catch (error) {
+    const { message } = <FirebaseError>error;
+    console.log(message);
+    return [];
+  }
 };

@@ -1,20 +1,33 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useAuth } from "../../Hooks/useAuth";
+import { getVideos } from "../../storage/storage/videos";
 //UI
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
 import { Container, Button } from "@nextui-org/react";
 import { MainContainer, StyledVideo } from "./Main.style";
 import TagsRow from "../TagsRow";
 
-const videos = [
-  "/assets/sample2.mp4",
+const videosDefault = [
+  "https://firebasestorage.googleapis.com/v0/b/playing-project-14960.appspot.com/o/videos%2F3Qqcqfb2QzchgvjgpXm1mLyz02o2%2Ftwice-the-feels-m-v.mp4?alt=media&token=b18e4d61-7caf-4b3f-b3eb-1e1782741e07",
   "/assets/sample.mp4",
   "/assets/sample2.mp4",
   "/assets/sample.mp4",
 ];
 
 export const Main = () => {
+  const { currentUser } = useAuth();
+  const [videos, setVideos] = useState<any[]>(videosDefault);
   const sliderRef = useRef<HTMLElement>(null);
   const [selected, setSelected] = useState<number>(0);
+
+  const listVideos = async () => {
+    const videos = await getVideos(currentUser!.uid);
+    setVideos(videos);
+  };
+
+  useEffect(() => {
+    if (currentUser) listVideos();
+  }, [currentUser]);
 
   const handleNext = () => {
     const videos = sliderRef.current!
